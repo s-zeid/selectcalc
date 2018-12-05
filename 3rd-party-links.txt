@@ -3,3 +3,11 @@ Third-party libraries used:
 * decimal.min.js -> https://github.com/MikeMcl/decimal.js/blob/v10.0.1/decimal.min.js
 
 * expr-eval.min.js -> https://github.com/silentmatt/expr-eval/blob/v1.2.2/dist/bundle.min.js
+
+Sources for the above:
+
+* decimal.min.js -> https://github.com/MikeMcl/decimal.js/blob/v10.0.1/decimal.js
+
+* expr-eval.min.js -> https://github.com/silentmatt/expr-eval/blob/v1.2.2/dist/bundle.js
+
+Notes on eval:  I no longer use eval myself in this add-on, but the libraries below use the Function constructor as eval.  decimal.min.js uses a static, hardcoded string ("return this").  expr-eval.min.js uses it only in Expression.prototype.toJSFunction, which my code does not use.
