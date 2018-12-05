@@ -21,5 +21,6 @@ product-page.html: README.md
 	sed -i -e 's,<em>\(Nineteen Eighty-Four\)</em>,<i>\1</i>,g' $@.tmp
 	sed -i -e 's,<p>,\n,g; s,</p>,,g; s,&quot;,",g' $@.tmp
 	sed -i -e 's,<h[1-6][^>]*>,\n<b>,g; s,</h[1-6]>,</b>,g' $@.tmp
+	sed -i -e 's,^<\(b\|strong\)>,\n<\1>,g' $@.tmp
 	tail -n +2 $@.tmp > $@
 	rm -f $@.tmp
