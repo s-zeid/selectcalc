@@ -1,0 +1,5 @@
+Third-party libraries used:
+
+* decimal.min.js -> https://github.com/MikeMcl/decimal.js/blob/v10.0.1/decimal.min.js
+
+* expr-eval.min.js -> https://github.com/silentmatt/expr-eval/blob/v1.2.2/dist/bundle.min.js

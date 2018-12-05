@@ -1,6 +1,7 @@
 *.swp
 
 web-ext-artifacts
+product-page.html
 *.zip
 *.xpi
 *.crx

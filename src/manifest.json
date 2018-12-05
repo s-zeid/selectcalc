@@ -1,7 +1,7 @@
 {
  "manifest_version": 2,
  "name": "SelectCalc",
- "version": "1.0",
+ "version": "2.0",
  
  "description": "Calculates highlighted expressions in input fields and text areas.",
  "homepage_url": "https://code.s.zeid.me/selectcalc",
@@ -14,13 +14,13 @@
  },
  
  "background": {
-  "scripts": ["background.js"]
+  "scripts": ["decimal.min.js", "expr-eval.min.js", "background.js"]
  },
  
  "content_scripts": [
   {
    "matches": ["*://*/*"],
-   "js": ["selectcalc.js"]
+   "js": ["decimal.min.js", "expr-eval.min.js", "selectcalc.js"]
   }
  ],
  

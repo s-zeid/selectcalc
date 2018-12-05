@@ -1,0 +1,6 @@
+[submodule "lib/decimal.js"]
+	path = lib/decimal.js
+	url = https://github.com/MikeMcl/decimal.js.git
+[submodule "lib/expr-eval"]
+	path = lib/expr-eval
+	url = https://github.com/silentmatt/expr-eval.git
