@@ -1,9 +1,13 @@
 SelectCalc
 ==========
 
-Turn any form field into a powerful calculator!
+Turn any form field into a powerful calculator!  
 <https://addons.mozilla.org/en-US/firefox/addon/selectcalc/>  
 <https://code.s.zeid.me/selectcalc>
+
+(To build from source, install
+[web-ext](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Getting_started_with_web-ext)
+and run `make` on a Unix-like system.)
 
 *                        *                        *                        *
 
