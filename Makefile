@@ -1,4 +1,4 @@
-all: xpi html
+all: xpi
 .PHONY: xpi watch-xpi
 
 xpi:
