@@ -7,7 +7,8 @@ Turn any form field into a powerful calculator!
 
 (To build from source, install
 [web-ext](https://developer.mozilla.org/en-US/docs/Mozilla/Add-ons/WebExtensions/Getting_started_with_web-ext)
-and run `make` on a Unix-like system.)
+and run `git submodule update --init --recursive` followed by `make` on a
+Unix-like system.)
 
 *                        *                        *                        *
 
