@@ -1,7 +1,47 @@
-(function(globals) {
- globals.DecimalParser = function DecimalParser(options) {
+function DecimalParserFactory(globals) {
+ function _sandbox(callback) {
+  // Temporarily replace parseFloat() and parseInt() with versions that
+  // return strings while executing callback.  (parseInt() will still
+  // return Numbers for radices other than 2, 10, or 16.)  This ensures
+  // that the expr-eval parser does not convert numeric literals to
+  // floating point Number objects, which can compromise accuracy.
+  // For this to work, the argument passed to DecimalParserFactory
+  // should be the top-level object under which the code for
+  // expr-eval.js was evaluated.
+  
+  var _parseFloat = globals.parseFloat;
+  globals.parseFloat = function __DecimalParser_parseFloat(value) {
+   return String(value);
+  };
+  
+  var _parseInt = globals.parseInt;
+  globals.parseInt = function __DecimalParser_parseInt(value, radix) {
+   if (radix == 10 || typeof radix == "undefined")
+    return String(value);
+   
+   if (radix == 16 || radix == 2) {
+    var prefixes = {16: "0x", 2: "0b"};
+    globals.parseInt = _parseInt;
+    var result = Decimal(prefixes[radix] + String(value)).toString();
+    globals.parseInt = __DecimalParser_parseInt;
+    return result;
+   }
+   
+   return _parseInt(value, radix);
+  }
+  
+  var result = callback();
+  
+  globals.parseFloat = _parseFloat;
+  globals.parseInt = _parseInt;
+  
+  return result;
+ };
+ 
+ 
+ return function DecimalParser(options) {
   if (typeof options != "object") options = {};
-  let o = new exprEval.Parser(options);
+  let o = _sandbox(() => new exprEval.Parser(options));
   
   let D = Decimal;
   let fromBool = (a) => D(a ? 1 : 0);
@@ -77,6 +117,32 @@
   o._extras.bool = (a) => bool(a);
   o._extras.fromBool = (a) => fromBool(a);
   
+  o._parse = o.parse;
+  o.parse = (expr) => _sandbox(() => o._parse(expr));
+  
+  o._sandbox = (a) => _sandbox(a);
+  
   return o;
  }
-})(window);
+}
+
+
+DecimalParserFactory.egg = function egg() {
+ console.error(
+  "       I TRIED TO PARSE A DECIMAL WITH JAVASCRIPT       \n" +
+  "                                                        \n" +
+  "                            ,--.                        \n" +
+  "                           /-__ \\                       \n" +
+  "                          |\\\\\\   |                      \n" +
+  "                          |\\\\\\\\/|D                      \n" +
+  "                          = \\  //                       \n" +
+  "                      __=--`-\\_\\--,__                   \n" +
+  "                     /#######\\   \\###`\\                 \n" +
+  "                    /         \\   \\|  |                 \n" +
+  "                   /   /|      \\   \\  |                 \n" +
+  "                  /   / |       \\     |                 \n" +
+  "                 /   /  |/u/surkh\\    /                 \n" +
+  "                                                        \n" +
+  "           I NOW HAVE A  DECIMALPARSERFACTORY           "
+ );
+}

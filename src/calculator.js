@@ -3,6 +3,7 @@ let Calculator = {};
 
 Calculator.calculate = function(expr, eggs) {
  var D = Decimal;
+ var DecimalParser = DecimalParserFactory(window);
  
  // fast path for egg matches
  if (Array.isArray(eggs) && eggs.includes(expr.trim()))
