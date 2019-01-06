@@ -20,7 +20,7 @@
  "content_scripts": [
   {
    "matches": ["*://*/*"],
-   "js": ["decimal.min.js", "expr-eval.min.js", "decimal-parser.js", "selectcalc.js"]
+   "js": ["decimal.min.js", "expr-eval.min.js", "decimal-parser.js", "content.js"]
   }
  ],
  
