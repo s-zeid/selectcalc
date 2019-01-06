@@ -16,7 +16,7 @@
  var EGG_CONFIRM = "SelectCalc:  O'Brien will answer the next question.";
  var EGG_CASES = [["2+2", "5"], ["2+2==5", "1"], ["2+2==4", "0"],
                   ["2+2!=5", "0"], ["2+2!=4", "1"],
-                  ["6079", "Smith W"]];
+                  ["6079", "Smith W"], ["101", "engf"]];
  var previous = "";
  
  
@@ -29,7 +29,7 @@
   var selectMode = "end";
   
   function onResponse(result) {
-   var exprNoSpaces = expr.replace(/\s+/g, "");
+   var exprNoSpaces = result.expr.replace(/\s+/g, "");
    if (exprNoSpaces == EGG_SHORTCUT) {
     output = EGG_TRIGGER;
     selectMode = "select";
