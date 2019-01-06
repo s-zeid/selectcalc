@@ -14,13 +14,21 @@
  },
  
  "background": {
-  "scripts": ["decimal.min.js", "expr-eval.min.js", "decimal-parser.js", "background.js"]
+  "scripts": [
+   "expr-eval.min.js",
+   "decimal.min.js",
+   "decimal-parser.js",
+   "calculator.js",
+   "background.js"
+  ]
  },
  
  "content_scripts": [
   {
    "matches": ["*://*/*"],
-   "js": ["decimal.min.js", "expr-eval.min.js", "decimal-parser.js", "content.js"]
+   "js": [
+    "content.js"
+   ]
   }
  ],
  

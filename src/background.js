@@ -1,5 +1,7 @@
 function evaluateSelection(tab) {
- var sendMessage = (tab) => browser.tabs.sendMessage(tab.id, "evaluate-selection");
+ function sendMessage(tab) {
+  return browser.tabs.sendMessage(tab.id, {command: "evaluate-selection"});
+ }
  
  if (tab)
   sendMessage(tab);
@@ -31,4 +33,11 @@ browser.contextMenus.create({
 browser.contextMenus.onClicked.addListener(function(info, tab) {
  if (info.menuItemId == "evaluate-selection")
   evaluateSelection(tab);
+});
+
+
+browser.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+ if (request.command == "calculate") {
+  sendResponse(Calculator.calculate(request.expr, request.eggs));
+ }
 });
