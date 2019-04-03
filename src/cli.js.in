@@ -1,0 +1,36 @@
+const window = this;
+
+const exprEval = require("./src/expr-eval.min.js");
+const Decimal = require("./src/decimal.min.js");
+
+
+function msleep(n) {
+ // https://github.com/erikdubbelboer/node-sleep
+ Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n);
+}
+
+
+function main(argv) {
+ const {execFile} = require("child_process");
+ execFile("xclip", ["-selection", "primary", "-out"], (err, stdout, stderr) => {
+  if (err) {
+   console.error("xclip: " + stderr.trimRight());
+   process.exit(err.code);
+  }
+  
+  if (stdout.trim()) {
+   var result = Calculator.calculate(stdout);
+   if (result.value) {
+    execFile("xdotool", ["type", "--clearmodifiers", result.value], (err, stdout, stderr) => {
+     if (err) {
+      console.error(stderr.trimRight());
+      process.exit(err.code);
+     }
+    });
+   }
+  }
+ });
+}
+
+
+main(process.argv.slice(1));

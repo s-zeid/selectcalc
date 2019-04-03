@@ -1,4 +1,4 @@
-all: xpi
+all: xpi cli.js
 .PHONY: xpi watch-xpi
 
 xpi:
@@ -6,6 +6,14 @@ xpi:
 
 watch-xpi:
 	web-ext build -s "src" --as-needed -o
+
+cli.js: src/decimal-parser.js src/calculator.js src/cli.js.in
+	printf '#!/usr/bin/env node' > $@
+	for i in $^; do \
+	 printf '\n\n// %s\n' "$$i" >> $@; \
+	 cat "$$i" >> $@; \
+	done
+	chmod +x $@
 
 html: product-page.html
 product-page.html: README.md
