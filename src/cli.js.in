@@ -3,33 +3,57 @@ const window = this;
 const exprEval = require("./src/expr-eval.min.js");
 const Decimal = require("./src/decimal.min.js");
 
+const {execFile, spawnSync} = require("child_process");
+
+
+function main(argv) {
+ releaseModifiers();
+ 
+ // Home, Shift+End is used because Firefox will not update the primary
+ // selection when Ctrl+A and some other keystrokes are used to make the
+ // selection.  (See <https://bugzilla.mozilla.org/show_bug.cgi?id=1333161#c9>.)
+ // Also, it may make more sense in some use cases to select just one line
+ // instead of a whole document / text box.
+ if (argv[1] == "-s" || argv[1] == "--select")
+  call(["xdotool", "key", "--clearmodifiers", "Home", "Shift+End"]);
+ 
+ var rSel = call(["xclip", "-selection", "primary", "-out"]);
+ var expr = rSel.stdout.toString(); 
+ 
+ if (expr.trim()) {
+  var result = Calculator.calculate(expr);
+  if (result.value)
+   call(["xdotool", "type", "--delay", "0.5", "--clearmodifiers", result.value]);
+ }
+}
+
 
 function msleep(n) {
- // https://github.com/erikdubbelboer/node-sleep
+ // <https://github.com/erikdubbelboer/node-sleep>
  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, n);
 }
 
 
-function main(argv) {
- const {execFile} = require("child_process");
- execFile("xclip", ["-selection", "primary", "-out"], (err, stdout, stderr) => {
-  if (err) {
-   console.error("xclip: " + stderr.trimRight());
-   process.exit(err.code);
-  }
-  
-  if (stdout.trim()) {
-   var result = Calculator.calculate(stdout);
-   if (result.value) {
-    execFile("xdotool", ["type", "--clearmodifiers", result.value], (err, stdout, stderr) => {
-     if (err) {
-      console.error(stderr.trimRight());
-      process.exit(err.code);
-     }
-    });
-   }
-  }
- });
+function call(argv) {
+ var r = spawnSync(argv[0], argv.slice(1));
+ if (r.status) {
+  console.error(r.stderr.toString().trimRight());
+  process.exit(r.status);
+ }
+ return r;
+}
+
+
+function releaseModifiers() {
+ call([
+  "xdotool", "keyup", "--delay", "1",
+  "Alt_L", "Alt_R",
+  "Control_L", "Control_R",
+  "Hyper_L", "Hyper_R",
+  "Meta_L", "Meta_R",
+  "Shift_L", "Shift_R",
+  "Super_L", "Super_R"
+ ]);
 }
 
 
